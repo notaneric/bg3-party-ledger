@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Party Ledger — A Baldur's Gate Chronicle</title>
+  <meta name="description" content="A shared, live tracker for a four-player Baldur's Gate 3 co-op run. View everyone's progress; edit only your own." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Marcellus+SC&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- GSAP (free, full toolset). App degrades gracefully if blocked. -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" defer></script>
+</head>
+<body>
+  <div class="wrap" id="app"><!-- rendered by app.js --></div>
+  <div id="overlays"><!-- sheet, drawer, badges --></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
