@@ -10,14 +10,14 @@
   --stone:      oklch(0.225 0.016 135);
   --stone-2:    oklch(0.27 0.018 135);
   --stone-line: oklch(0.34 0.02 130);
-  --bronze:     oklch(0.66 0.07 78);
-  --bronze-dim: oklch(0.52 0.06 78);
-  --gold:       oklch(0.82 0.11 85);
-  --gold-soft:  oklch(0.88 0.07 88);
+  --bronze:     oklch(0.78 0.075 80);
+  --bronze-dim: oklch(0.62 0.065 78);
+  --gold:       oklch(0.84 0.12 85);
+  --gold-soft:  oklch(0.91 0.08 88);
   --oxblood:    oklch(0.47 0.14 26);
-  --oxblood-lt: oklch(0.62 0.16 28);
-  --parchment:  oklch(0.89 0.028 85);
-  --parch-dim:  oklch(0.74 0.026 85);
+  --oxblood-lt: oklch(0.66 0.17 28);
+  --parchment:  oklch(0.94 0.028 85);
+  --parch-dim:  oklch(0.84 0.03 85);
   --teal:       oklch(0.6 0.05 190);
 
   /* seat heraldry */
@@ -45,8 +45,8 @@ body {
   background-attachment: fixed;
   color: var(--parchment);
   font-family: "EB Garamond", Georgia, serif;
-  font-size: 18px;
-  line-height: 1.55;
+  font-size: 19px;
+  line-height: 1.58;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -61,6 +61,7 @@ h1, h2, h3, .display { font-family: "Marcellus SC", "Marcellus", serif; font-wei
 button, input, textarea, select { font: inherit; color: inherit; }
 button { cursor: pointer; background: none; border: none; }
 ::selection { background: oklch(0.66 0.07 78 / 0.35); }
+::placeholder { color: var(--bronze-dim); opacity: 1; }
 
 /* ---------- Layout shell ---------- */
 .wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: clamp(1.4rem, 4vw, 3rem) clamp(1rem, 4vw, 2.4rem) 5rem; }
@@ -68,8 +69,8 @@ button { cursor: pointer; background: none; border: none; }
 /* ---------- Masthead ---------- */
 .mast { text-align: center; margin-bottom: clamp(2rem, 5vw, 3.4rem); position: relative; }
 .mast .kicker {
-  font-family: "Marcellus SC", serif; letter-spacing: 0.42em; text-transform: uppercase;
-  font-size: 0.72rem; color: var(--bronze); margin-bottom: 0.9rem; padding-left: 0.42em;
+  font-family: "Marcellus SC", serif; letter-spacing: 0.34em; text-transform: uppercase;
+  font-size: 0.8rem; color: var(--bronze); margin-bottom: 0.9rem; padding-left: 0.34em;
 }
 .mast h1 {
   font-family: "Cinzel Decorative", "Marcellus SC", serif; font-weight: 700;
@@ -80,7 +81,7 @@ button { cursor: pointer; background: none; border: none; }
 }
 .mast h1[contenteditable="true"]:focus { box-shadow: 0 2px 0 var(--bronze-dim); }
 .mast .filigree { width: clamp(160px, 30vw, 280px); height: 22px; margin: 0.7rem auto 0.4rem; color: var(--bronze); opacity: 0.85; }
-.mast .sub { color: var(--parch-dim); font-style: italic; font-size: 1.02rem; }
+.mast .sub { color: var(--parch-dim); font-style: italic; font-size: 1.1rem; }
 
 /* ---------- Status bar (seat + story progress) ---------- */
 .statusbar {
@@ -99,7 +100,7 @@ button { cursor: pointer; background: none; border: none; }
 .actbar { display: flex; align-items: center; gap: 0.7rem; flex: 1 1 360px; min-width: 280px; }
 .actbar .acts { display: flex; gap: 0.4rem; flex: 1; }
 .actbar .act {
-  flex: 1; text-align: center; font-family: "Marcellus SC", serif; font-size: 0.7rem; letter-spacing: 0.12em;
+  flex: 1; text-align: center; font-family: "Marcellus SC", serif; font-size: 0.78rem; letter-spacing: 0.08em;
   padding: 0.4rem 0.3rem 0.5rem; border: 1px solid var(--stone-line); border-radius: 4px; color: var(--parch-dim);
   position: relative; background: var(--ink-2); transition: color 0.3s, border-color 0.3s;
 }
@@ -158,7 +159,7 @@ button { cursor: pointer; background: none; border: none; }
     repeating-conic-gradient(from 0deg at 50% 50%, oklch(0.2 0.014 135) 0deg 10deg, oklch(0.17 0.012 135) 10deg 20deg);
 }
 .card .back .seal { width: 96px; height: 96px; color: var(--bronze); margin-bottom: 1.2rem; opacity: 0.95; }
-.card .back .await { font-family: "Marcellus SC", serif; letter-spacing: 0.16em; font-size: 0.82rem; color: var(--parch-dim); text-transform: uppercase; }
+.card .back .await { font-family: "Marcellus SC", serif; letter-spacing: 0.14em; font-size: 0.9rem; color: var(--parch-dim); text-transform: uppercase; }
 .card .back .claim {
   margin-top: 1rem; font-family: "Marcellus SC", serif; font-size: 0.82rem; letter-spacing: 0.1em;
   color: var(--ink); background: linear-gradient(var(--gold), var(--bronze));
@@ -179,12 +180,12 @@ button { cursor: pointer; background: none; border: none; }
   border-top: 1px solid oklch(0.4 0.03 90 / 0.4);
 }
 .card .face .pcname { font-family: "Marcellus SC", serif; font-size: 1.18rem; color: var(--gold-soft); line-height: 1.1; }
-.card .face .pcclass { font-size: 0.84rem; color: var(--parch-dim); font-style: italic; margin-top: 0.15rem; }
-.card .face .pcmeta { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.45rem; font-family: "Marcellus SC", serif; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--parch-dim); }
+.card .face .pcclass { font-size: 0.92rem; color: var(--parch-dim); font-style: italic; margin-top: 0.15rem; }
+.card .face .pcmeta { display: flex; justify-content: center; gap: 0.5rem; margin-top: 0.45rem; font-family: "Marcellus SC", serif; font-size: 0.74rem; letter-spacing: 0.05em; color: var(--parch-dim); }
 .card .face .pcmeta b { color: var(--gold); font-weight: 400; }
 .card .face .pips { display: flex; justify-content: center; gap: 0.55rem; margin-top: 0.6rem; }
-.card .face .pip { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; font-size: 0.62rem; color: var(--parch-dim); letter-spacing: 0.04em; }
-.card .face .pip b { color: var(--gold-soft); font-family: "Marcellus SC", serif; font-size: 0.88rem; }
+.card .face .pip { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; font-size: 0.68rem; color: var(--parch-dim); letter-spacing: 0.03em; }
+.card .face .pip b { color: var(--gold-soft); font-family: "Marcellus SC", serif; font-size: 0.98rem; }
 
 .card .ownerflag {
   position: absolute; top: 8px; right: 10px; z-index: 3;
@@ -227,7 +228,7 @@ button { cursor: pointer; background: none; border: none; }
 /* tabs */
 .tabs { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0 clamp(1.4rem, 4vw, 2.6rem); margin-top: -1px; border-bottom: 1px solid var(--stone-line); }
 .tabs button {
-  font-family: "Marcellus SC", serif; font-size: 0.8rem; letter-spacing: 0.06em; color: var(--parch-dim);
+  font-family: "Marcellus SC", serif; font-size: 0.86rem; letter-spacing: 0.04em; color: var(--parch-dim);
   padding: 0.85rem 0.9rem 0.95rem; position: relative; transition: color 0.25s;
 }
 .tabs button::after { content: ""; position: absolute; left: 0.6rem; right: 0.6rem; bottom: -1px; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.3s var(--ease); }
@@ -242,7 +243,7 @@ button { cursor: pointer; background: none; border: none; }
 /* field grid */
 .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.9rem 1.1rem; }
 .field { display: flex; flex-direction: column; gap: 0.28rem; }
-.field label { font-family: "Marcellus SC", serif; font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bronze); }
+.field label { font-family: "Marcellus SC", serif; font-size: 0.74rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--bronze); }
 .field .val, .field input, .field select, .field textarea {
   background: var(--ink-2); border: 1px solid var(--stone-line); border-radius: 4px; color: var(--parchment);
   padding: 0.5rem 0.65rem; font-family: "EB Garamond", serif; font-size: 1rem; width: 100%;
@@ -256,7 +257,7 @@ button { cursor: pointer; background: none; border: none; }
 /* ability scores */
 .abilities { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.55rem; }
 .abil { text-align: center; background: var(--ink-2); border: 1px solid var(--stone-line); border-radius: 5px; padding: 0.55rem 0.2rem; }
-.abil .ab { font-family: "Marcellus SC", serif; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--bronze); }
+.abil .ab { font-family: "Marcellus SC", serif; font-size: 0.7rem; letter-spacing: 0.07em; color: var(--bronze); }
 .abil .sc { font-family: "Marcellus SC", serif; font-size: 1.45rem; color: var(--gold-soft); line-height: 1.1; }
 .abil .mod { font-size: 0.74rem; color: var(--parch-dim); }
 .abil input { width: 100%; text-align: center; background: transparent; border: none; border-bottom: 1px dashed var(--bronze-dim); color: var(--gold-soft); font-family: "Marcellus SC", serif; font-size: 1.3rem; }
@@ -310,7 +311,7 @@ button { cursor: pointer; background: none; border: none; }
 .stat-chip { display: flex; flex-direction: column; gap: 0.2rem; align-items: center; padding: 0.8rem 1.3rem; border: 1px solid var(--stone-line); border-radius: 6px; background: var(--ink-2); }
 .stat-chip .n { font-family: "Marcellus SC", serif; font-size: 1.9rem; color: var(--gold-soft); }
 .stat-chip.danger .n { color: var(--oxblood-lt); }
-.stat-chip .k { font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bronze); font-family: "Marcellus SC", serif; }
+.stat-chip .k { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--bronze); font-family: "Marcellus SC", serif; }
 
 /* ============================================================
    Shared story panel
@@ -327,14 +328,14 @@ button { cursor: pointer; background: none; border: none; }
 .actcol { background: linear-gradient(oklch(0.21 0.015 135 / 0.7), oklch(0.18 0.013 135 / 0.7)); border: 1px solid var(--stone-line); border-radius: 8px; padding: 1.1rem 1.15rem; }
 .actcol h4 { font-family: "Marcellus SC", serif; color: var(--gold-soft); font-size: 1rem; letter-spacing: 0.06em; display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.2rem; }
 .actcol h4 .pct { font-size: 0.74rem; color: var(--bronze); }
-.actcol .actsub { font-size: 0.82rem; color: var(--parch-dim); font-style: italic; margin-bottom: 0.85rem; }
+.actcol .actsub { font-size: 0.9rem; color: var(--parch-dim); font-style: italic; margin-bottom: 0.85rem; }
 .actcol.sealed { text-align: center; }
 .actcol.sealed .sealmark { width: 54px; height: 54px; color: var(--bronze-dim); margin: 0.6rem auto 0.7rem; opacity: 0.7; }
-.actcol.sealed .sealtxt { color: var(--bronze-dim); font-style: italic; font-size: 0.88rem; }
+.actcol.sealed .sealtxt { color: var(--parch-dim); font-style: italic; font-size: 0.94rem; }
 .beat { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.4rem 0; }
 .beat .box { flex: none; width: 20px; height: 20px; border: 1px solid var(--bronze-dim); border-radius: 4px; display: grid; place-items: center; color: var(--gold); font-size: 0.8rem; margin-top: 0.15rem; cursor: pointer; transition: background 0.2s; }
 .beat.done .box { background: linear-gradient(var(--gold), var(--bronze)); color: var(--ink); }
-.beat .txt { flex: 1; font-size: 0.96rem; }
+.beat .txt { flex: 1; font-size: 1.02rem; }
 .beat.done .txt { color: var(--parch-dim); text-decoration: line-through; text-decoration-color: var(--bronze-dim); }
 .beat .rm { color: var(--oxblood-lt); opacity: 0; font-size: 0.85rem; }
 .beat:hover .rm { opacity: 0.7; }
@@ -369,7 +370,7 @@ button { cursor: pointer; background: none; border: none; }
 .histitem .top { display: flex; justify-content: space-between; gap: 0.6rem; align-items: baseline; }
 .histitem .who { font-family: "Marcellus SC", serif; font-size: 0.78rem; color: var(--gold-soft); }
 .histitem .ago { font-size: 0.72rem; color: var(--bronze); font-style: italic; }
-.histitem .what { font-size: 0.9rem; color: var(--parch-dim); margin: 0.3rem 0 0.5rem; }
+.histitem .what { font-size: 0.95rem; color: var(--parch-dim); margin: 0.3rem 0 0.5rem; }
 .histitem .what b { color: var(--parchment); font-style: normal; }
 .histitem .diff { font-size: 0.82rem; color: var(--parch-dim); }
 .histitem .diff .old { color: var(--oxblood-lt); text-decoration: line-through; }
@@ -381,7 +382,7 @@ button { cursor: pointer; background: none; border: none; }
 .hist-empty { color: var(--bronze-dim); font-style: italic; text-align: center; padding: 2rem 1rem; }
 
 /* sync badge */
-.syncbadge { position: fixed; bottom: 1.2rem; left: 1.2rem; z-index: 30; font-family: "Marcellus SC", serif; font-size: 0.68rem; letter-spacing: 0.1em; color: var(--bronze); display: flex; align-items: center; gap: 0.45rem; opacity: 0.8; }
+.syncbadge { position: fixed; bottom: 1.2rem; left: 1.2rem; z-index: 30; font-family: "Marcellus SC", serif; font-size: 0.74rem; letter-spacing: 0.07em; color: var(--bronze); display: flex; align-items: center; gap: 0.45rem; opacity: 0.95; }
 .syncbadge .led { width: 8px; height: 8px; border-radius: 50%; background: var(--bronze-dim); }
 .syncbadge.live .led { background: var(--teal); box-shadow: 0 0 8px var(--teal); }
 .syncbadge.local .led { background: var(--gold); }
@@ -393,7 +394,7 @@ button { cursor: pointer; background: none; border: none; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 560px) {
-  body { font-size: 17px; }
+  body { font-size: 18px; }
 
   /* deck cards: set the size VAR so height keeps tarot proportion (not just width) */
   .card { --frame-w: min(86vw, 330px); }

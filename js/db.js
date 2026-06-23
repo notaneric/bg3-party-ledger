@@ -27,14 +27,14 @@ class DB {
     this.players = SEATS.map(emptyPlayer);
     this.story = defaultStory();
     this.history = [];
-    this.actor = "A wanderer";       // display name of whoever is acting
+    this.actor = "Someone";          // display name of whoever is acting
     this._listeners = new Set();
     this._sb = null;
   }
 
   onChange(cb) { this._listeners.add(cb); return () => this._listeners.delete(cb); }
   _emit() { this._listeners.forEach((cb) => cb()); }
-  setActor(name) { this.actor = name || "A wanderer"; }
+  setActor(name) { this.actor = name || "Someone"; }
 
   async init() {
     if (configured()) {
@@ -166,7 +166,7 @@ class DB {
 
     await this._appendLog({
       id: uid(), target_type: "story", target_id: "party",
-      target_label: "the Shared Story",
+      target_label: "Shared Story",
       field_label: meta.label || "edited the story",
       old_display: fmt(meta.old), new_display: fmt(meta.new),
       before_json: before, after_json: draft,

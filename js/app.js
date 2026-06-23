@@ -27,9 +27,9 @@ const state = {
 
 function seatName(slug) {
   const p = db.players.find((x) => x.slug === slug);
-  return p ? (p.display_name || slug) : "A wanderer";
+  return p ? (p.display_name || slug) : "Someone";
 }
-function refreshActor() { db.setActor(state.mySeat ? seatName(state.mySeat) : "A wanderer"); }
+function refreshActor() { db.setActor(state.mySeat ? seatName(state.mySeat) : "Someone"); }
 function isMine(slug) { return state.mySeat && slug === state.mySeat; }
 
 /* ============================ RENDER ============================ */
@@ -61,7 +61,7 @@ function render() {
 function masthead() {
   const c = db.story.campaign;
   return `<header class="mast">
-    <div class="kicker">A Baldur's Gate Chronicle</div>
+    <div class="kicker">Baldur's Gate 3 · Co-op Run</div>
     <h1 contenteditable="true" spellcheck="false" data-edit="campaign.title">${esc(c.title)}</h1>
     <div class="filigree">${I.FILIGREE_BAR}</div>
     <p class="sub" contenteditable="true" spellcheck="false" data-edit="campaign.subtitle">${esc(c.subtitle)}</p>
@@ -104,7 +104,7 @@ function card(p, i) {
       ${frame()}
       <div class="back">
         <div class="seal">${I.TAROT_SEAL}</div>
-        <div class="await">Awaiting their tale</div>
+        <div class="await">Unclaimed</div>
         <div class="claim">Claim this card</div>
         <div class="hint">${esc(SEATS[i].default_name)}</div>
       </div>
@@ -123,7 +123,7 @@ function card(p, i) {
       <div class="emblem">${emblem}</div>
       <div class="nameplate">
         <div class="pcname">${esc(ch.name || p.display_name)}</div>
-        <div class="pcclass">${esc([ch.race, ch.class].filter(Boolean).join(" ") || "Unwritten")}${ch.subclass ? " · " + esc(ch.subclass) : ""}</div>
+        <div class="pcclass">${esc([ch.race, ch.class].filter(Boolean).join(" ") || "No character yet")}${ch.subclass ? " · " + esc(ch.subclass) : ""}</div>
         <div class="pcmeta"><span>LVL <b>${lvl}</b></span><span>·</span><span>${esc(ch.origin || "Tav")}</span></div>
         <div class="pips">
           <div class="pip"><b>${recruited}</b>allies</div>
@@ -167,7 +167,7 @@ function sheet(slug) {
         <div class="crest">${emblem}</div>
         <div class="htext">
           <div class="nm" ${mine ? 'contenteditable="true" spellcheck="false" data-pedit="char.name"' : ""}>${esc(p.char.name || p.display_name)}</div>
-          <div class="ln">${esc([p.char.race, p.char.class, p.char.subclass].filter(Boolean).join(" · ") || "An unwritten fate")} — Level ${p.char.level || 1}</div>
+          <div class="ln">${esc([p.char.race, p.char.class, p.char.subclass].filter(Boolean).join(" · ") || "No character yet")} · Level ${p.char.level || 1}</div>
         </div>
         ${mine ? `<span class="readonly-tag" style="color:var(--seat);border-color:var(--seat)">Your card</span>`
                 : `<span class="readonly-tag">View only</span>`}
@@ -181,7 +181,7 @@ function sheet(slug) {
         ${panelAllies(p, mine)}
         ${panelJournal(p, mine)}
       </div>
-      ${mine ? "" : `<div class="editbar"><span class="note">This is ${esc(p.display_name)}'s card. You can read it, but only they can edit it.</span></div>`}
+      ${mine ? "" : `<div class="editbar"><span class="note">Only ${esc(p.display_name)} can edit this card.</span></div>`}
     </article>
   </div>`;
 }
@@ -251,15 +251,15 @@ function panelQuests(p, mine) {
         ${q.note ? `<div class="desc">${esc(q.note)}</div>` : ""}
       </div>
       ${mine ? `<button class="rm" data-quest-rm="${idx}" title="Remove">✕</button>` : ""}
-    </div>`).join("") : `<p class="hist-empty">No personal quests or choices logged yet.</p>`;
+    </div>`).join("") : `<p class="hist-empty">Nothing logged yet.</p>`;
   return `<section class="panel ${state.tab === "quests" ? "active" : ""}" data-panel="quests">
     <h3>Personal Quests & Choices</h3>
-    <p class="actsub" style="color:var(--parch-dim);font-style:italic;margin-bottom:.8rem">Side quests, deals struck, moral calls — the choices that are yours alone.</p>
+    <p class="actsub" style="color:var(--parch-dim);font-style:italic;margin-bottom:.8rem">Your own side quests and the choices you made.</p>
     <div class="list">${rows}</div>
     ${mine ? `<div class="addrow">
       <input type="text" id="qTitle" placeholder="Quest or choice…">
       <input type="text" id="qNote" placeholder="Detail (optional)">
-      <button class="btn" data-quest-add>Inscribe</button>
+      <button class="btn" data-quest-add>Add</button>
     </div>` : ""}
   </section>`;
 }
@@ -284,14 +284,14 @@ function panelAllies(p, mine) {
       </div>
       ${mine ? `<button class="rm" data-ally-rm="${idx}" title="Remove">✕</button>` : ""}
     </div>`;
-  }).join("") : `<p class="hist-empty">No companions recruited yet.</p>`;
+  }).join("") : `<p class="hist-empty">No companions yet.</p>`;
   const avail = COMPANIONS.filter((n) => !p.companions.some((c) => c.name === n));
   return `<section class="panel ${state.tab === "allies" ? "active" : ""}" data-panel="allies">
     <h3>Companions & Approval</h3>
     <div class="list">${rows}</div>
     ${mine ? `<div class="addrow">
       <select id="allyName">${avail.map((n) => `<option>${esc(n)}</option>`).join("")}<option>Other…</option></select>
-      <button class="btn" data-ally-add>Recruit</button>
+      <button class="btn" data-ally-add>Add</button>
     </div>` : ""}
   </section>`;
 }
@@ -301,13 +301,13 @@ function panelJournal(p, mine) {
     <div class="entry">
       <div class="when">${new Date(e.ts).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</div>
       <div class="text">${esc(e.text)}</div>
-    </div>`).join("") : `<p class="hist-empty">The journal is blank. The first night awaits.</p>`;
+    </div>`).join("") : `<p class="hist-empty">No entries yet.</p>`;
   const gear = p.gear.length ? p.gear.map((g, idx) => `
     <div class="row">
       <div class="marker">${esc((g.name || "?")[0])}</div>
       <div class="body"><div class="title">${esc(g.name)}</div>${g.note ? `<div class="desc">${esc(g.note)}</div>` : ""}</div>
       ${mine ? `<button class="rm" data-gear-rm="${idx}" title="Remove">✕</button>` : ""}
-    </div>`).join("") : `<p class="hist-empty">No notable loot logged.</p>`;
+    </div>`).join("") : `<p class="hist-empty">No gear logged yet.</p>`;
   return `<section class="panel ${state.tab === "journal" ? "active" : ""}" data-panel="journal">
     <h3>Tallies</h3>
     <div class="strip">
@@ -326,14 +326,14 @@ function panelJournal(p, mine) {
     <div class="list">${gear}</div>
     ${mine ? `<div class="addrow">
       <input type="text" id="gName" placeholder="Item…">
-      <input type="text" id="gNote" placeholder="Why it matters (optional)">
-      <button class="btn" data-gear-add>Stow</button>
+      <input type="text" id="gNote" placeholder="Note (optional)">
+      <button class="btn" data-gear-add>Add</button>
     </div>` : ""}
 
     <h3>Journal</h3>
     ${mine ? `<div class="addrow" style="flex-direction:column;align-items:stretch">
       <textarea id="jText" rows="3" placeholder="What happened this session…"></textarea>
-      <div><button class="btn" data-journal-add>Record entry</button></div>
+      <div><button class="btn" data-journal-add>Add entry</button></div>
     </div>` : ""}
     <div class="list" style="margin-top:.8rem">${entries}</div>
   </section>`;
@@ -350,8 +350,8 @@ function storyPanel() {
         <h4>${esc(a.name)}</h4>
         <div class="actsub">${esc(a.sub)}</div>
         <div class="sealmark">${I.LOCK}</div>
-        <div class="sealtxt">Sealed — no spoilers until you arrive.</div>
-        <div class="unlock"><button class="btn ${canUnlock ? "" : "ghost"}" data-unlock="${a.n}">Unseal ${esc(a.name)}</button></div>
+        <div class="sealtxt">Locked until you get here.</div>
+        <div class="unlock"><button class="btn ${canUnlock ? "" : "ghost"}" data-unlock="${a.n}">Unlock ${esc(a.name)}</button></div>
       </div>`;
     }
     const pct = actProgress(a);
@@ -374,7 +374,7 @@ function storyPanel() {
 
   return `<section class="story">
     <div class="sectitle"><span class="ln"></span><h2>The Shared Story</h2><span class="ln"></span></div>
-    <p class="where">The party stands at
+    <p class="where">The party is at
       <b contenteditable="true" spellcheck="false" data-edit="location">${esc(st.location)}</b>
     </p>
     <div class="acts-grid">${cols}</div>
@@ -384,7 +384,7 @@ function storyPanel() {
 /* ============================ HISTORY DRAWER ============================ */
 function histButton() {
   const live = db.history.filter((h) => !h.reverted).length;
-  return `<button class="histbtn" id="histBtn">${I.HISTORY}<span>Chronicle</span>${live ? '<span class="dot"></span>' : ""}</button>`;
+  return `<button class="histbtn" id="histBtn">${I.HISTORY}<span>History</span>${live ? '<span class="dot"></span>' : ""}</button>`;
 }
 
 function drawer() {
@@ -400,9 +400,9 @@ function drawer() {
       ${h.reverted ? `<div class="ago" style="margin-top:.4rem">Undone by ${esc(h.reverted_by || "someone")}</div>`
                    : `<button class="undo" data-undo="${h.id}">Undo this change</button>`}
     </div>`;
-  }).join("") : `<p class="hist-empty">No changes yet. Every edit will be recorded here — and any of them can be undone.</p>`;
+  }).join("") : `<p class="hist-empty">No changes yet. Every edit shows up here, and you can undo any of them.</p>`;
   return `<aside class="drawer ${state.drawer ? "open" : ""}" id="drawer">
-    <header><h3>Chronicle of Changes</h3><button class="x" data-drawer-close aria-label="Close">✕</button></header>
+    <header><h3>Change history</h3><button class="x" data-drawer-close aria-label="Close">✕</button></header>
     <div class="hist-list">${items}</div>
   </aside>`;
 }
@@ -469,7 +469,7 @@ function renderOverlays() {
   const hb = $("#histBtn"); if (hb) hb.addEventListener("click", () => { state.drawer = true; renderOverlays(); });
   const dc = $("[data-drawer-close]"); if (dc) dc.addEventListener("click", () => { state.drawer = false; renderOverlays(); });
   document.querySelectorAll("[data-undo]").forEach((b) =>
-    b.addEventListener("click", async () => { const e = await db.undo(b.dataset.undo); if (e) toast(`Undone — ${esc(e.field_label)} reverted.`); }));
+    b.addEventListener("click", async () => { const e = await db.undo(b.dataset.undo); if (e) toast(`Undone. ${esc(e.field_label)} reverted.`); }));
 }
 
 function openSheetFor(slug) {
@@ -480,12 +480,12 @@ function openSheetFor(slug) {
 function closeSheet() { state.openSlug = null; renderOverlays(); }
 
 function onClaim(slug) {
-  const name = prompt("Name this hero's player (your name):", "");
+  const name = prompt("Your name:", "");
   if (name === null) return;
   if (!state.mySeat) { state.mySeat = slug; localStorage.setItem("ledger-my-seat", slug); }
   if (name) db.setActor(name);
   db.claim(slug, name || undefined);
-  toast(`<b>${esc(name || "A hero")}</b> claimed their card.`);
+  toast(`<b>${esc(name || "Someone")}</b> claimed their card.`);
 }
 
 function wireSheet() {
@@ -613,7 +613,7 @@ function wireStory() {
     const an = +b.dataset.unlock;
     db.commitStory((d) => { const a = d.acts.find((x) => x.n === an); a.locked = false; d.current_act = an; },
       { label: `unsealed Act ${an}` });
-    toast(`<b>Act ${an}</b> unsealed.`);
+    toast(`<b>Act ${an}</b> unlocked.`);
   }));
 }
 

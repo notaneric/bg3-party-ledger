@@ -23,7 +23,7 @@ export const SEATS = [
 // Campaign meta (editable in-app; persisted with the story row).
 export const CAMPAIGN_DEFAULT = {
   title: "Our Baldur's Gate",
-  subtitle: "Four souls, one tadpole, no plan that survives Act One.",
+  subtitle: "Four players, one campaign.",
 };
 
 export const CLASSES = [
