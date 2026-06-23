@@ -224,6 +224,7 @@ function panelChar(p, mine) {
   return `<section class="panel ${state.tab === "char" ? "active" : ""}" data-panel="char">
     <h3>Identity</h3>
     <div class="fields">
+      ${pfield(p, mine, "display_name", "Played by", p.display_name, { ph: "Your name" })}
       ${pfield(p, mine, "char.name", "Character name", c.name, { ph: "Tav" })}
       ${pfield(p, mine, "char.origin", "Origin", c.origin, { options: ORIGINS })}
       ${pfield(p, mine, "char.race", "Race", c.race, { options: RACES })}
@@ -668,7 +669,7 @@ function coerce(path, val) {
   return val;
 }
 function humanField(path) {
-  const map = { "char.name": "name", "char.race": "race", "char.class": "class", "char.subclass": "subclass",
+  const map = { "display_name": "player", "char.name": "name", "char.race": "race", "char.class": "class", "char.subclass": "subclass",
     "char.level": "level", "char.origin": "origin", "char.background": "background", "char.multiclass": "multiclass",
     "char.feats": "feats" };
   if (map[path]) return map[path];
