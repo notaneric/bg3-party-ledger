@@ -48,8 +48,7 @@ function render() {
     <main class="deck" id="deck">${db.players.map(card).join("")}</main>
     ${storyPanel()}
   `;
-  document.body.querySelector("#overlays").innerHTML =
-    (state.openSlug ? sheet(state.openSlug) : "") + drawer() + histButton() + syncBadge();
+  rebuildOverlays();
 
   wire();
 
@@ -467,9 +466,18 @@ function wire() {
     }));
 }
 
+// Rebuild the overlay layer, preserving the open sheet's scroll position so an
+// edit-triggered re-render doesn't jump the sheet back to the top on mobile.
+function rebuildOverlays() {
+  const ov = document.body.querySelector("#overlays");
+  const prevScroll = ov.querySelector(".scrim")?.scrollTop || 0;
+  ov.innerHTML = (state.openSlug ? sheet(state.openSlug) : "") + drawer() + histButton() + syncBadge();
+  const sc = ov.querySelector(".scrim");
+  if (sc && prevScroll) sc.scrollTop = prevScroll;
+}
+
 function renderOverlays() {
-  document.body.querySelector("#overlays").innerHTML =
-    (state.openSlug ? sheet(state.openSlug) : "") + drawer() + histButton() + syncBadge();
+  rebuildOverlays();
   // re-wire just overlays
   if (state.openSlug) wireSheet();
   const hb = $("#histBtn"); if (hb) hb.addEventListener("click", () => { state.drawer = true; renderOverlays(); });
@@ -481,7 +489,9 @@ function renderOverlays() {
 function openSheetFor(slug) {
   state.openSlug = slug; state.tab = "char";
   renderOverlays();
-  requestAnimationFrame(() => A.openSheet($("#scrim"), $("#sheet")));
+  // run entrance synchronously so the from-0 opacity is set this tick (no flash
+  // now that the scrim defaults to visible)
+  A.openSheet($("#scrim"), $("#sheet"));
 }
 function closeSheet() { state.openSlug = null; renderOverlays(); }
 
