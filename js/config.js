@@ -7,8 +7,8 @@
 
 export const SUPABASE = {
   // Paste from Supabase > Project Settings > API
-  url:     "YOUR_SUPABASE_URL",        // e.g. https://abcd1234.supabase.co
-  anonKey: "YOUR_SUPABASE_ANON_KEY",   // the public "anon" key (safe in client)
+  url:     "https://gkcbvrbklyfyvpfoggsr.supabase.co",        // e.g. https://abcd1234.supabase.co
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrY2J2cmJrbHlmeXZwZm9nZ3NyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNzYxMTcsImV4cCI6MjA5Nzc1MjExN30.ESYi2NUyw8AQN9kfXb9yhOu_3dDYmIPbllnU7XQzvDw",   // the public "anon" key (safe in client)
 };
 
 // One row per seat. slug must stay stable; rename display_name freely in the UI.
