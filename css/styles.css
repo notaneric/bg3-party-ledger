@@ -335,10 +335,14 @@ button { cursor: pointer; background: none; border: none; }
 .beat { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.4rem 0; }
 .beat .box { flex: none; width: 20px; height: 20px; border: 1px solid var(--bronze-dim); border-radius: 4px; display: grid; place-items: center; color: var(--gold); font-size: 0.8rem; margin-top: 0.15rem; cursor: pointer; transition: background 0.2s; }
 .beat.done .box { background: linear-gradient(var(--gold), var(--bronze)); color: var(--ink); }
-.beat .txt { flex: 1; font-size: 1.02rem; }
+.beat .txt { flex: 1; font-size: 1.02rem; border-radius: 3px; padding: 0 0.15rem; }
+.beat .txt[contenteditable] { cursor: text; }
+.beat .txt[contenteditable]:hover { background: oklch(1 0 0 / 0.03); }
+.beat .txt[contenteditable]:focus { outline: none; background: var(--ink-2); box-shadow: inset 0 0 0 1px var(--bronze-dim); }
 .beat.done .txt { color: var(--parch-dim); text-decoration: line-through; text-decoration-color: var(--bronze-dim); }
-.beat .rm { color: var(--oxblood-lt); opacity: 0; font-size: 0.85rem; }
-.beat:hover .rm { opacity: 0.7; }
+.beat .rm { color: var(--oxblood-lt); opacity: 0.5; font-size: 0.95rem; padding: 0 0.25rem; transition: opacity 0.15s; }
+.beat:hover .rm, .beat:focus-within .rm { opacity: 1; }
+@media (hover: none) { .beat .rm { opacity: 0.7; } }   /* always reachable on touch */
 .unlock { margin-top: 0.9rem; }
 
 /* ============================================================

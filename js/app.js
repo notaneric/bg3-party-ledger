@@ -16,6 +16,12 @@ const SEAT_VARS = ["var(--seat-0)", "var(--seat-1)", "var(--seat-2)", "var(--sea
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// Consistent format for posted notes: trim, collapse whitespace, capitalize first letter.
+// Leaves the rest as typed so proper nouns (Zevlor, Withers) keep their case.
+const normalizeNote = (s) => {
+  s = String(s ?? "").trim().replace(/\s+/g, " ");
+  return s ? s[0].toUpperCase() + s.slice(1) : s;
+};
 
 const state = {
   mySeat: localStorage.getItem("ledger-my-seat") || "",
@@ -358,8 +364,8 @@ function storyPanel() {
     const beats = a.beats.map((b, idx) => `
       <div class="beat ${b.done ? "done" : ""}">
         <button class="box" data-beat="${a.n}:${idx}" aria-label="Toggle beat">${b.done ? "✓" : ""}</button>
-        <div class="txt">${esc(b.txt)}</div>
-        <button class="rm" data-beat-rm="${a.n}:${idx}" title="Remove">✕</button>
+        <div class="txt" contenteditable="true" spellcheck="false" data-beat-edit="${a.n}:${idx}" title="Click to edit">${esc(b.txt)}</div>
+        <button class="rm" data-beat-rm="${a.n}:${idx}" title="Delete">✕</button>
       </div>`).join("");
     return `<div class="actcol ${st.current_act === a.n ? "" : ""}">
       <h4>${esc(a.name)} <span class="pct">${pct}%</span></h4>
@@ -601,13 +607,31 @@ function wireStory() {
   document.querySelectorAll("[data-beat-add]").forEach((b) => b.addEventListener("click", () => {
     const an = +b.dataset.beatAdd;
     const input = document.querySelector(`[data-beat-input="${an}"]`);
-    const txt = input?.value.trim(); if (!txt) return;
+    const txt = normalizeNote(input?.value); if (!txt) return;
     db.commitStory((d) => { d.acts.find((x) => x.n === an).beats.push({ txt, done: false }); },
       { label: "added a story beat", new: txt });
   }));
+  // Enter in the add-beat field posts it
+  document.querySelectorAll("[data-beat-input]").forEach((inp) => inp.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { e.preventDefault(); document.querySelector(`[data-beat-add="${inp.dataset.beatInput}"]`)?.click(); }
+  }));
+  // edit a beat inline (normalize on commit); Enter or blur saves, empty reverts
+  document.querySelectorAll("[data-beat-edit]").forEach((el) => {
+    el.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); el.blur(); } });
+    el.addEventListener("blur", () => {
+      const [an, idx] = el.dataset.beatEdit.split(":").map(Number);
+      const cur = db.story.acts.find((x) => x.n === an)?.beats[idx]?.txt ?? "";
+      const val = normalizeNote(el.textContent);
+      if (!val || val === cur) { el.textContent = cur; return; }
+      db.commitStory((d) => { d.acts.find((x) => x.n === an).beats[idx].txt = val; },
+        { label: "edited a story beat", old: cur, new: val });
+    });
+  });
   document.querySelectorAll("[data-beat-rm]").forEach((b) => b.addEventListener("click", () => {
     const [an, idx] = b.dataset.beatRm.split(":").map(Number);
-    db.commitStory((d) => { d.acts.find((x) => x.n === an).beats.splice(idx, 1); }, { label: "removed a story beat" });
+    const cur = db.story.acts.find((x) => x.n === an)?.beats[idx]?.txt;
+    db.commitStory((d) => { d.acts.find((x) => x.n === an).beats.splice(idx, 1); },
+      { label: "removed a story beat", old: cur });
   }));
   document.querySelectorAll("[data-unlock]").forEach((b) => b.addEventListener("click", () => {
     const an = +b.dataset.unlock;
