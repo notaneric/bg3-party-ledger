@@ -394,8 +394,33 @@ button { cursor: pointer; background: none; border: none; }
 /* ---------- responsive ---------- */
 @media (max-width: 560px) {
   body { font-size: 17px; }
+
+  /* deck cards: set the size VAR so height keeps tarot proportion (not just width) */
+  .card { --frame-w: min(86vw, 330px); }
+
+  .statusbar { gap: 0.8rem 1.2rem; padding: 0.8rem 1rem; }
+
+  /* full-screen sheet on phones — more room, no confusing scrim peek */
+  .scrim { display: block; padding: 0; }
+  .sheet { width: 100%; min-height: 100vh; min-height: 100dvh; border-radius: 0;
+           box-shadow: inset 0 0 0 4px var(--ink-2); }
+  .sheet header { padding: 1.2rem 3.3rem 1rem 1.1rem; flex-wrap: wrap; gap: 0.7rem 0.9rem; }
+  .sheet header .crest { width: 56px; height: 56px; }
+  .sheet header .htext { flex: 1 1 60%; }
+  .sheet header .readonly-tag { order: 5; }            /* wraps to its own line, clear of the ✕ */
+  .sheet .closebtn { top: 0.6rem; right: 0.6rem; width: 34px; height: 34px; }
+
+  /* tabs scroll sideways instead of stacking 4 rows tall */
+  .tabs { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { white-space: nowrap; flex: none; }
+
   .abilities { grid-template-columns: repeat(3, 1fr); }
-  .card { width: min(82vw, 300px); }
+  .acts-grid { grid-template-columns: 1fr; }
+  .editbar { flex-wrap: wrap; }
+
+  .histbtn { bottom: 0.9rem; right: 0.9rem; padding: 0.55rem 0.85rem; }
+  .syncbadge { bottom: 0.9rem; }
 }
 
 /* ---------- reduced motion ---------- */
